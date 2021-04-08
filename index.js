@@ -91,7 +91,7 @@ module.exports = (api) => {
      * Handle requests to set the "Target Position" characteristic
      */
     handleTargetPositionSet(value, callback) {
-      this.targetPosition = value;
+      this.targetPosition = value ? 0 : 100;
       let currentValue = 0;
       this.log('Triggered SET TargetPosition:', value);
       this.run(value ? this.openURL : this.closeUrl, status => {
