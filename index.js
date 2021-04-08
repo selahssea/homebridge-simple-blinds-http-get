@@ -45,6 +45,14 @@ class SimpleBlindsHttpGetPlugin {
     })
   }
 
+  handleSwingModeGet() {
+    let currentValue = Characteristic.SwingMode.SWING_DISABLED;
+    this.run(this.statusURL, resp => {
+      currentValue = 1;
+    });
+    return currentValue;
+  }
+
   /**
    * Handle requests to get the current value of the "Current Slat State" characteristic
    */
