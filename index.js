@@ -89,7 +89,10 @@ class SimpleBlindsHttpGetPlugin {
             errorCallback(`error: ${err.message}, body: ${body}`);
         }
     });
+
   }
-
-
+  
+  getServices() {
+    return [this.service];
+  }
 }
