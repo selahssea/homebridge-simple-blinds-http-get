@@ -10,7 +10,7 @@ module.exports = (api) => {
         this.log = log;
         this.config = config;
         this.openURL = config.open_url;
-        this.openURL = config.open_url;
+        this.closeURL = config.close_url;
         this.statusURL = config.status_url;
         this.api = api;
 
