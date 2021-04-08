@@ -1,4 +1,4 @@
-var request = require("request");
+var request = require('request');
 
 module.exports = (api) => {
   api.registerAccessory('homebridge-simple-blinds-http-get-plugin', 'SimpleBlindsHttpGetPlugin', SimpleBlindsHttpGetPlugin);
@@ -80,7 +80,7 @@ class SimpleBlindsHttpGetPlugin {
 
   run(commandUrl, callback, errorCallback) {
     request({
-        method: "GET",
+        method: 'GET',
         url: commandUrl,
     }, function (err, response, body) {
         if (!err && response && response.statusCode == 200) {
