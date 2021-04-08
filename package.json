@@ -1,0 +1,18 @@
+{
+  "name": "homebridge-simple-blinds-http-get",
+  "version": "1.0.0",
+  "description": "A homebridge plugin to control blinds over HTTP GET with percentage position and quick stop",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "homebridge-plugin"
+  ],
+  "author": "selahssea",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/selahssea/homebridge-simple-blinds-http-get.git"
+  }
+}
