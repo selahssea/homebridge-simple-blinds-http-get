@@ -35,9 +35,22 @@ class SimpleBlindsHttpGetPlugin {
         .onGet(this.handleSwingModeGet.bind(this))
         .onSet(this.handleSwingModeSet.bind(this));
 
+      this.service.getCharacteristic(this.Characteristic.TargetTiltAngle)
+        .onSet(this.handTargetTiltAngleSet.bind(this));
+
   }
 
   handleSwingModeSet(value) {
+    this.log(`handleSwingModeSet: ${value}`)
+    value ? this.run(this.openURL, resp => {
+      this.log(`Opening response: ${resp}`);
+    }) : this.run(this.closeURL, () => {
+      this.log(`Closing response: ${resp}`);
+    })
+  }
+
+  handTargetTiltAngleSet(value) {
+    this.log(`handTargetTiltAngleSet: ${value}`)
     value ? this.run(this.openURL, resp => {
       this.log(`Opening response: ${resp}`);
     }) : this.run(this.closeURL, () => {
@@ -46,9 +59,9 @@ class SimpleBlindsHttpGetPlugin {
   }
 
   handleSwingModeGet() {
-    let currentValue = Characteristic.SwingMode.SWING_DISABLED;
+    let currentValue = this.Characteristic.SwingMode.SWING_ENABLED;
     this.run(this.statusURL, resp => {
-      currentValue = 1;
+      currentValue = resp;
     });
     return currentValue;
   }
@@ -82,7 +95,7 @@ class SimpleBlindsHttpGetPlugin {
     request({
         method: 'GET',
         url: commandUrl,
-    }, function (err, response, body) {
+    }, (err, response, body) => {
         if (!err && response && response.statusCode == 200) {
             callback(body);
         } else {
