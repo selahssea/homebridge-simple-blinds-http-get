@@ -22,7 +22,7 @@ class SimpleBlindsHttpGetPlugin {
       this.name = config.name;
 
       // create a new Slats service
-      this.service = new this.Service(this.Service.Slats);
+      this.service = new this.Service.Slats(this.name);
 
       // create handlers for required characteristics
       this.service.getCharacteristic(this.Characteristic.CurrentSlatState)
