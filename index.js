@@ -1,7 +1,7 @@
 var request = require("request");
 
 module.exports = (api) => {
-  api.registerAccessory('SimpleBlindsHttpGetPlugin', SimpleBlindsHttpGetPlugin);
+  api.registerAccessory('homebridge-simple-blinds-http-get-plugin', 'SimpleBlindsHttpGetPlugin', SimpleBlindsHttpGetPlugin);
 };
 
 class SimpleBlindsHttpGetPlugin {
