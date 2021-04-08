@@ -42,7 +42,7 @@ module.exports = (api) => {
     /**
      * Handle requests to get the current value of the "Current Position" characteristic
      */
-    handleCurrentPositionGet() {
+    handleCurrentPositionGet(callback) {
       this.log.debug('Triggered GET CurrentPosition');
 
       let currentValue = 1;
@@ -55,11 +55,12 @@ module.exports = (api) => {
             this.log(`Current status OPENED`);
             currentValue = 100
         }
+        callback(null, currentValue);
       })
 
-      this.currentPosition = currentValue;
+      // this.currentPosition = currentValue;
   
-      return currentValue;
+      // return currentValue;
     }
   
   
@@ -70,7 +71,7 @@ module.exports = (api) => {
       this.log.debug('Triggered GET PositionState');
   
       // set this to a valid value for PositionState
-      const currentValue = this.Characteristic.PositionState.DECREASING;
+      const currentValue = this.Characteristic.PositionState.STOPPED;
   
       return currentValue;
     }
@@ -79,28 +80,34 @@ module.exports = (api) => {
     /**
      * Handle requests to get the current value of the "Target Position" characteristic
      */
-    handleTargetPositionGet() {
+    handleTargetPositionGet(callback) {
       this.log.debug('Triggered GET TargetPosition');
   
-      // set this to a valid value for TargetPosition
-      const currentValue = 1;
-  
-      return currentValue;
+      callback(null, this.targetPosition);
     }
   
     /**
      * Handle requests to set the "Target Position" characteristic
      */
-    handleTargetPositionSet(value) {
-      this.log('Triggered SET TargetPosition:', value)
+    handleTargetPositionSet(value, callback) {
+      this.targetPosition = value;
+      this.log('Triggered SET TargetPosition:', value);
+      this.run(value ? this.closeURL : this.openUrl, status => {
+        if (status == 'opened') {
+            this.log(`Current status OPENED`);
+        } else if (status == 'closed') {
+            this.log(`Current status CLOSED`);
+        }
+        callback(null, currentValue);
+      })
       this.log.debug('Triggered SET TargetPosition:', value);
     }
 
     run(commandUrl, callback, errorCallback) {
         request({
-            method: "GET",
+            method: 'GET',
             url: commandUrl,
-        }, function (err, response, body) {
+        }, (err, response, body) => {
             if (!err && response && response.statusCode == 200) {
                 callback(body);
             } else {
