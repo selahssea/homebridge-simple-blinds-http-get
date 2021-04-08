@@ -42,7 +42,7 @@ module.exports = (api) => {
     /**
      * Handle requests to get the current value of the "Current Position" characteristic
      */
-    handleCurrentPositionGet(callback) {
+     handleCurrentPositionGet(callback) {
       this.log.debug('Triggered GET CurrentPosition');
 
       let currentValue = 1;
@@ -55,11 +55,12 @@ module.exports = (api) => {
             this.log(`Current status OPENED`);
             currentValue = 100
         }
-        callback(null, currentValue);
+        this.currentPosition = currentValue;
+        // callback(null, currentValue);
       })
 
       // this.currentPosition = currentValue;
-  
+      return this.currentPosition;
       // return currentValue;
     }
   
@@ -80,10 +81,10 @@ module.exports = (api) => {
     /**
      * Handle requests to get the current value of the "Target Position" characteristic
      */
-    handleTargetPositionGet(callback) {
+     handleTargetPositionGet(callback) {
       this.log.debug('Triggered GET TargetPosition');
-  
-      callback(null, this.targetPosition);
+      return this.targetPosition;
+      //callback(null, this.targetPosition);
     }
   
     /**
@@ -91,14 +92,17 @@ module.exports = (api) => {
      */
     handleTargetPositionSet(value, callback) {
       this.targetPosition = value;
+      let currentValue = 0;
       this.log('Triggered SET TargetPosition:', value);
-      this.run(value ? this.closeURL : this.openUrl, status => {
+      this.run(value ? this.openURL : this.closeUrl, status => {
         if (status == 'opened') {
             this.log(`Current status OPENED`);
+            currentValue = 100;
         } else if (status == 'closed') {
             this.log(`Current status CLOSED`);
+            currentValue = 0;
         }
-        callback(null, currentValue);
+        this.currentPosition = currentValue;
       })
       this.log.debug('Triggered SET TargetPosition:', value);
     }
@@ -112,12 +116,12 @@ module.exports = (api) => {
                 callback(body);
             } else {
                 errorCallback(`error: ${err.message}, body: ${body}`);
-            }
-        });
+              }
+          });
+      }
+    
+      getServices() {
+        return [this.service];
+      }
+    
     }
-  
-    getServices() {
-      return [this.service];
-    }
-  
-  }
