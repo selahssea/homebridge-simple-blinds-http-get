@@ -24,7 +24,7 @@ module.exports = (api) => {
         this.name = config.name;
   
         // create a new Window Covering service
-        this.service = new this.Service(this.Service.WindowCovering);
+        this.service = new this.Service.WindowCovering(this.name);
   
         // create handlers for required characteristics
         this.service.getCharacteristic(this.Characteristic.CurrentPosition)
@@ -92,6 +92,7 @@ module.exports = (api) => {
      * Handle requests to set the "Target Position" characteristic
      */
     handleTargetPositionSet(value) {
+      this.log('Triggered SET TargetPosition:', value)
       this.log.debug('Triggered SET TargetPosition:', value);
     }
 
@@ -106,6 +107,10 @@ module.exports = (api) => {
                 errorCallback(`error: ${err.message}, body: ${body}`);
             }
         });
+    }
+  
+    getServices() {
+      return [this.service];
     }
   
   }
